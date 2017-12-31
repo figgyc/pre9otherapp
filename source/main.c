@@ -7,15 +7,8 @@
 #include <3ds/services/APT.h>
 #include <3ds/services/FS.h>
 #include <3ds/services/GSPgpu.h>
-#include "text.h"
 #include "udsploit.h"
 #include "safehax.h"
-
-#ifdef LOADROPBIN
-#include "menu_ropbin_bin.h"
-#endif
-
-#include "decompress.h"
 
 #define HID_PAD (*(vu32*)0x1000001C)
 
@@ -146,26 +139,6 @@ void hex2str(char* out, u32 val)
 	out[8]=0x00;
 }
 
-void renderString(char* str, int x, int y)
-{
-	u8 *ptr = GSP_GetTopFBADR();
-	if(ptr==NULL)return;
-	drawString(ptr,str,x,y);
-	GSP_FlushDCache((u32*)ptr, 240*400*3);
-}
-
-void centerString(char* str, int y)
-{
-	renderString(str, 200-(_strlen(str)*4), y);
-}
-
-void drawHex(u32 val, int x, int y)
-{
-	char str[9];
-
-	hex2str(str,val);
-	renderString(str,x,y);
-}
 
 Result _GSPGPU_ReleaseRight(Handle handle)
 {
@@ -212,12 +185,12 @@ void clearScreen(u8 shade)
 void errorScreen(char* str, u32* dv, u8 n)
 {
 	clearScreen(0x00);
-	renderString("FATAL ERROR",0,0);
-	renderString(str,0,10);
+	//renderString("FATAL ERROR",0,0);
+	//renderString(str,0,10);
 	if(dv && n)
 	{
 		int i;
-		for(i=0;i<n;i++)drawHex(dv[i], 8, 50+i*10);
+	//	for(i=0;i<n;i++)drawHex(dv[i], 8, 50+i*10);
 	}
 	while(1);
 }
@@ -227,8 +200,8 @@ void drawTitleScreen(char* str)
 	clearScreen(0x00);
 	//centerString(HAX_NAME_VERSION,0);
 	//centerString(BUILDTIME,10);
-	centerString("smealum.github.io/ninjhax2/",20);
-	renderString(str, 0, 40);
+	//centerString("smealum.github.io/ninjhax2/",20);
+	//renderString(str, 0, 40);
 }
 
 // Result _APT_HardwareResetAsync(Handle* handle)
@@ -459,7 +432,7 @@ int main(int loaderparam, char** argv)
 	_GSPGPU_SetBufferSwap(*gspHandle, 0, (GSPGPU_FramebufferInfo){0, (u32*)top_framebuffer, (u32*)top_framebuffer, 240 * 3, (1<<8)|(1<<6)|1, 0, 0});
 	_GSPGPU_SetBufferSwap(*gspHandle, 1, (GSPGPU_FramebufferInfo){0, (u32*)low_framebuffer, (u32*)low_framebuffer, 240 * 3, 1, 0, 0});
 
-	drawTitleScreen("going...");
+	// TODO: visual indicator (fill)
 
 	udsploit();
 	hook_kernel();
@@ -467,7 +440,7 @@ int main(int loaderparam, char** argv)
 
 	svcSleepThread(100000000); //sleep long enough for memory to be written
 
-	drawTitleScreen("\n   ready.");
+	// TODO as above
 	
 	//disable GSP module access
 	_GSPGPU_ReleaseRight(*gspHandle);

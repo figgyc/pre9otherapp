@@ -22,5 +22,10 @@ SECTIONS
 		SORT(CONSTRUCTORS)
 		. = ALIGN(4);
 	}
+
+	.data ALIGN(0x4) : {
+		*(.data)
+		. = ALIGN(4);
+	}
 }
 

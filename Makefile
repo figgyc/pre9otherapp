@@ -19,8 +19,9 @@ LINK = arm-none-eabi-gcc
 #LINK = arm-none-eabi-ld
 AS = arm-none-eabi-as
 OBJCOPY = arm-none-eabi-objcopy
-CFLAGS += -Wall -std=c99 -march=armv6 -Os -Iinclude -I"$(CTRULIB)/include" -I$(DEVKITPRO)/libnds/include $(DEFINES) $(ARCH)
-LDFLAGS += -Wl,--script=$(LDPATH) -g $(ARCH) -L"$(DEVKITARM)/arm-none-eabi/lib" -L"$(CTRULIB)/lib" -Wl,-Map=output.map
+ASFLAGS	:=	-g $(ARCH)
+CFLAGS += -Wall -D_3DS -std=c99 -march=armv6 -Os -I"$(CTRULIB)/include"  $(DEFINES) $(ARCH)
+LDFLAGS += -Wl,--script=$(LDPATH) -g $(ARCH) -L"$(CTRULIB)/lib" -Wl,-Map,output.map
 
 CFILES = $(wildcard source/*.c)
 BINFILES = $(wildcard data/*.bin)
