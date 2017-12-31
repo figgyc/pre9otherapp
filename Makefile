@@ -44,7 +44,10 @@ endef
 
 .PHONY:=all
 
-all: $(PROJECTNAME).bin
+all: $(PROJECTNAME).bin arm11payload
+
+arm11payload:
+	cd payload && make
 
 ctrulib:
 	cd "$(CTRULIB)" && make

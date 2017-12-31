@@ -8,6 +8,5 @@ all:
 	$(CC) -g *.c -c -march=armv6z -O2 -ffast-math -std=c99 -Wall
 	$(CC) -g *.s -c -march=armv6z
 	$(CC) -T 3ds.ld *.o
-	mkdir -p ../romfs
-	$(OC) --set-section-flags .bss=alloc,load,contents -O binary a.out ../romfs/arm11.bin
+	$(OC) --set-section-flags .bss=alloc,load,contents -O binary a.out ../p9a11.bin
 	rm *.out *.o
