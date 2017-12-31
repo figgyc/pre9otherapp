@@ -1,0 +1,1 @@
+void drawTitleScreen(char* str);
